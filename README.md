@@ -6,6 +6,7 @@
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FJeeva-zone%2Fgrok-scan-domain&env=MAX_CANDIDATES,DNS_CONCURRENCY,REQUEST_TIMEOUT,MAX_RESULTS,RATE_LIMIT_SECONDS&envDescription=Optional%20tuning%20variables%20(defaults%20work)&project-name=orange-test&repository-name=orange-test)
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Jeeva-zone/grok-scan-domain)
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Jeeva-zone/grok-scan-domain)
 
 ---
 
@@ -106,6 +107,33 @@ Browser  →  POST /api/scan  →  validate domain
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/Jeeva-zone/grok-scan-domain)
 
 > **Note:** The primary target is Vercel (Python serverless functions). Netlify works best if you adapt the API routes or use a Node-compatible backend. Prefer Vercel for the out-of-the-box experience.
+
+### Cloudflare
+
+[![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Jeeva-zone/grok-scan-domain)
+
+**Important:** This project’s API is written as Vercel Python serverless functions. Cloudflare Pages / Workers primarily use JavaScript/TypeScript. The one-click button above is useful for the frontend, but the Python `/api/scan` endpoint will need adaptation (or a separate Worker) to run fully on Cloudflare.
+
+#### Manual deployment to Cloudflare Pages
+
+1. Log in to the [Cloudflare Dashboard](https://dash.cloudflare.com/).
+2. Go to **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
+3. Select the repository `Jeeva-zone/grok-scan-domain`.
+4. Configure the build:
+   - **Framework preset:** Next.js (or None)
+   - **Build command:** `npm run build`
+   - **Build output directory:** `.next` (or leave default for Next.js)
+   - **Root directory:** `/` (leave empty)
+5. Add environment variables if needed (same names as in `.env.example`).
+6. Click **Save and Deploy**.
+
+#### Manual adaptation notes for the API on Cloudflare
+
+- Option A – Keep frontend on Cloudflare Pages and call a Vercel-hosted `/api/scan` (set the frontend to use the full Vercel API URL).
+- Option B – Rewrite `api/scan.py` logic as a Cloudflare Worker in JavaScript/TypeScript (using `fetch` for crt.sh + Cloudflare IP ranges, and DNS resolution via a compatible library or external service).
+- Option C – Use Cloudflare’s experimental Python Workers support (check current Cloudflare docs for availability and limitations).
+
+For the simplest production experience with the current codebase, **deploy on Vercel**.
 
 ---
 
