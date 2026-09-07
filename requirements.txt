@@ -1,0 +1,2 @@
+# Python dependencies for Orange Test backend
+# (stdlib only for core logic; no extra packages required)
